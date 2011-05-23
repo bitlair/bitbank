@@ -1,0 +1,5 @@
+[Database]
+hostname=localhost
+database=bitbar
+username=bitbar
+password=
