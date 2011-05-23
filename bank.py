@@ -43,7 +43,7 @@ class Bank():
             result = cursor.fetchone()
             self.username = result[0]
             self.balance = result[1]
-            print "User %s logged in" % self.username
+            print "401: User %s logged in" % self.username
         else:
             print "Error 404: Not found"
 
@@ -59,4 +59,5 @@ class Bank():
 
     def reset(self):
         self.total = float(0.00)
+        print "Transaction aborted"
         
