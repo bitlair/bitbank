@@ -7,7 +7,7 @@ class Bank():
 
     def account(self):
         if self.member == 0:
-            print "Error 403: Forbidden"
+            print "403: Forbidden"
             return
         try:
             self.balance = self.balance - self.total
@@ -20,7 +20,7 @@ class Bank():
     def deposit(self,amount):
         cursor = self.db.cursor()
         if self.member == 0:
-            print "User not logged in"
+            print "403: Forbidden"
             return
         self.balance = self.balance + float(amount)
         cursor.execute("""UPDATE member SET balance = %s WHERE nick = %s LIMIT 1""", (self.balance,self.username))
@@ -29,11 +29,11 @@ class Bank():
     def withdraw(self,amount):
         cursor = self.db.cursor()
         if self.member == 0:
-            print "User not logged in"
+            print "403: Forbidden"
             return
         self.balance = self.balance - float(amount)
         cursor.execute("""UPDATE member SET balance = %s WHERE nick = %s LIMIT 1""", (self.balance,self.username))
-        print "Your balance is: %s" % self.balance
+        print "200: Your balance is %s" % self.balance
 
     def login(self,barcode):
         cursor = self.db.cursor()
@@ -43,9 +43,9 @@ class Bank():
             result = cursor.fetchone()
             self.username = result[0]
             self.balance = result[1]
-            print "401: User %s logged in" % self.username
+            print "200: User %s logged in" % self.username
         else:
-            print "Error 404: Not found"
+            print "403: Forbidden"
 
     def logout(self):
         try:
