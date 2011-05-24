@@ -1,9 +1,11 @@
+from decimal import *
+
 class Bank():
     def __init__(self,db):
         self.db = db
         self.member = 0
         self.username = "Mr/Ms Guest"
-        self.total = float(0.00)
+        self.total = Decimal('0.00')
         self.products = []
 
     def account(self):
@@ -13,9 +15,16 @@ class Bank():
         try:
             self.balance = self.balance - self.total
         except:
-            self.balance = self.balance - float(self.total)
+            self.balance = self.balance - Decimal(self.total)
         cursor = self.db.cursor()
         cursor.execute("""UPDATE member SET balance = %s WHERE nick = %s LIMIT 1""", (self.balance,self.username))
+        try:
+            self.total = Decimal(0.00)
+        except:
+            pass
+        if self.member == 1:
+            self.logout()
+        self.products = []
         print "%s billed to your account" % self.total
 
     def deposit(self,amount):
@@ -23,7 +32,7 @@ class Bank():
         if self.member == 0:
             print "403: Forbidden"
             return
-        self.balance = self.balance + float(amount)
+        self.balance = self.balance + Decimal(amount)
         cursor.execute("""UPDATE member SET balance = %s WHERE nick = %s LIMIT 1""", (self.balance,self.username))
         print "Your balance is: %s" % self.balance
     
@@ -32,7 +41,7 @@ class Bank():
         if self.member == 0:
             print "403: Forbidden"
             return
-        self.balance = self.balance - float(amount)
+        self.balance = self.balance - Decimal(amount)
         cursor.execute("""UPDATE member SET balance = %s WHERE nick = %s LIMIT 1""", (self.balance,self.username))
         print "200: Your balance is %s" % self.balance
 
@@ -48,7 +57,7 @@ class Bank():
             return 
 
         result = cursor.fetchone()
-        self.total = self.total + float(result[1])
+        self.total = self.total + Decimal(result[1])
         self.products.append([result[0],result[1],barcode])
         for product in self.products:
             print "\t%s \t#%s\t DROP: %s Euro" % (self.username,product[0],product[1])
@@ -57,7 +66,7 @@ class Bank():
     def pay(self):
         print "%s payed %s euro to the register" % (self.username,self.total)
         try:
-            self.total = float(0.00)
+            self.total = Decimal(0.00)
         except:
             pass
         if self.member == 1:
@@ -91,7 +100,7 @@ class Bank():
 
     def reset(self):
         try:
-            self.total = float(0.00)
+            self.total = Decimal(0.00)
         except:
             pass
         self.products = []
