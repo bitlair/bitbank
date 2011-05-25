@@ -26,8 +26,7 @@ def run():
         if barcode.startswith('1337'):
             bank.login(barcode)
 
-        elif barcode == "clear" or barcode == "abort":
-            print "Aborted not payed"
+        elif barcode == "clear" or barcode == "abort" or barcode == "reset":
             bank.reset()
 
         elif barcode == "pay":
@@ -49,11 +48,17 @@ def run():
             amount = temp[1]
             bank.widthdraw(amount)
 
+        elif barcode.startswith('adduser'):
+            temp = barcode.split(' ')
+            bank.account_add(temp[1])
+
         elif barcode == "exit":
             _Runner = False
         
         else:
-            bank.product_add(barcode)
+            if bank.product_add(barcode) != True:
+                if bank.login(barcode) != True:
+                    print "404: Not found"
 
 if __name__ ==  '__main__':
     sys.exit(run())
