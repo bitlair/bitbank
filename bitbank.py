@@ -61,5 +61,6 @@ def run():
                     print "404: Not found"
 
 if __name__ ==  '__main__':
+    print "\x1b[H\x1b[J"
     sys.exit(run())
            
