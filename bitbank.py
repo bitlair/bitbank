@@ -22,7 +22,7 @@ def show_logo():
     for y, line in enumerate(lines):
         for x, char in enumerate(line):
             if char != ' ':
-                sys.stdout.write("\x1b[01;41m \x1b[01;40m")
+                sys.stdout.write("\x1b[00;41m \x1b[00;40m")
             else:
                 sys.stdout.write(" ")
         sys.stdout.write("\n")
