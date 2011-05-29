@@ -5,16 +5,30 @@ from bank import Bank
 from ansi import clear, cursor, Color
 from wifi import Wifi
 
-def run():
-    LOGO = '''
+def show_logo():
+    # set palette color 1 to our color
+    print "\x1b]P1FD5A1E"
+
+    logo = """
 #
 #     #   #
 ### # ##  #    #  #  ##
 # # # #   #     # # #
 ### #  ##  ## ### # #
-'''
 
-    print str(Color('yellow'))+LOGO+str(Color('reset'))
+"""
+    lines = logo.splitlines()
+
+    for y, line in enumerate(lines):
+        for x, char in enumerate(line):
+            if char != ' ':
+                sys.stdout.write("\x1b[01;41m \x1b[01;40m")
+            else:
+                sys.stdout.write(" ")
+        sys.stdout.write("\n")
+
+def run():
+    show_logo() 
     _Runner = True
 
     config = ConfigParser.ConfigParser()
@@ -44,13 +58,18 @@ def run():
             bank.reset()
 
         elif barcode == "pay":
+            print "\x1b[H\x1b[J"
+            show_logo()
             bank.pay()
 
         elif barcode == "logout":
-            print "\x1b[H\x1b[J" 
+            print "\x1b[H\x1b[J"
+            show_logo() 
             bank.logout()
 
         elif barcode == "bank":
+            print "\x1b[H\x1b[J"
+            show_logo()
             bank.account()
 
         elif barcode.startswith('deposit'):
