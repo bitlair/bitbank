@@ -58,10 +58,10 @@ def run():
             amount = temp[1]
             bank.deposit(amount)
 
-        elif barcode.startswith('widthdraw'):
+        elif barcode.startswith('withdraw'):
             temp = barcode.split(' ')
             amount = temp[1]
-            bank.widthdraw(amount)
+            bank.withdraw(amount)
 
         elif barcode.startswith('adduser'):
             temp = barcode.split(' ')
