@@ -3,3 +3,10 @@ hostname=localhost
 database=bitbar
 username=bitbar
 password=
+
+[Bitwifi]
+enable=True
+hostname=localhost
+database=bitwifi
+username=bitwifi
+password=
