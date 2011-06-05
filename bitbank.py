@@ -5,6 +5,11 @@ from bank import Bank
 from ansi import clear, cursor, Color
 from wifi import Wifi
 
+def open_la():
+    import parallel
+    p = parallel.Parallel()
+    p.setData(0xFF)
+
 def show_logo():
     # set palette color 1 to our color
     print "\x1b]P1FD5A1E"
@@ -61,6 +66,7 @@ def run():
             print "\x1b[H\x1b[J"
             show_logo()
             bank.pay()
+            open_la()
 
         elif barcode == "logout":
             print "\x1b[H\x1b[J"
