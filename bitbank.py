@@ -7,11 +7,8 @@ from wifi import Wifi
 from time import sleep
 
 def open_la():
-    import parallel
-    p = parallel.Parallel()
-    p.setData(0xFF)
-    sleep(3)
-    p.setData(0x00)
+    from subprocess import call
+    call("./open")
 
 def show_logo():
     # set palette color 1 to our color
