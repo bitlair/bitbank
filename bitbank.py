@@ -4,6 +4,7 @@ import sys
 from bank import Bank
 from ansi import clear, cursor, Color
 from wifi import Wifi
+from time import sleep
 
 def open_la():
     import parallel
