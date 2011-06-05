@@ -9,6 +9,8 @@ def open_la():
     import parallel
     p = parallel.Parallel()
     p.setData(0xFF)
+    sleep(3)
+    p.setData(0x00)
 
 def show_logo():
     # set palette color 1 to our color
