@@ -1,5 +1,6 @@
 from decimal import *
 from random import randrange
+import logging
 
 class Bank():
     def __init__(self,db):
@@ -16,6 +17,8 @@ class Bank():
         if cursor.rowcount == 0:
             cursor.execute("""INSERT INTO member (nick,barcode) VALUES(%s,%s)""",(username,str(usernumber)))
             print "200: User %s added barcode: %s" %(username,usernumber)
+            logging.info("200: User %s added barcode: %s" %(username,usernumber))
+            
         else:
             self.account_add(username) 
 
@@ -30,6 +33,7 @@ class Bank():
         cursor = self.db.cursor()
         cursor.execute("""UPDATE member SET balance = %s WHERE nick = %s LIMIT 1""", (self.balance,self.username))
         print "200: %s billed to your account new balance %s" % (self.total,self.balance)
+        logging.info("200: %s billed to your account new balance %s" % (self.total,self.balance))
         self.total = Decimal('0.00')
         if self.member == 1:
             self.logout()
@@ -43,6 +47,7 @@ class Bank():
         self.balance = self.balance + Decimal(amount)
         cursor.execute("""UPDATE member SET balance = %s WHERE nick = %s LIMIT 1""", (self.balance,self.username))
         print "200: Your balance is: %s" % self.balance
+        logging.info("200: Your balance is: %s" % self.balance)
     
     def withdraw(self,amount):
         cursor = self.db.cursor()
@@ -52,6 +57,7 @@ class Bank():
         self.balance = self.balance - Decimal(amount)
         cursor.execute("""UPDATE member SET balance = %s WHERE nick = %s LIMIT 1""", (self.balance,self.username))
         print "200: Your balance is %s" % self.balance
+        logging.info("200: Your balance is %s" % self.balance)
 
     def product_add(self,barcode):
         cursor = self.db.cursor()
@@ -68,11 +74,14 @@ class Bank():
         self.products.append([result[0],result[1],barcode])
         for product in self.products:
             print "\t%s \t#%s\t DROP: %s Euro" % (self.username,product[0],product[1])
+            logging.info("\t%s \t#%s\t DROP: %s Euro" % (self.username,product[0],product[1]))
         print "\t\t\t\tSubtotal: %s" % self.total
+        logging.info("\t\t\t\tSubtotal: %s" % self.total)
         return True
 
     def pay(self):
         print "200: %s payed %s euro to the register" % (self.username,self.total)
+        logging.info("200: %s payed %s euro to the register" % (self.username,self.total))
         try:
             self.total = Decimal(0.00)
         except:
@@ -92,6 +101,7 @@ class Bank():
             self.username = result[0]
             self.balance = Decimal(result[1])
             print "200: User %s logged in" % self.username
+            logging.info("200: User %s logged in" % self.username)
             return True
         else:
             return False
@@ -103,6 +113,7 @@ class Bank():
             print "403: Not logged in"
             return
         print "200: User %s logged out" % self.username
+        logging.info("200: User %s logged out" % self.username)
         self.member = 0
         self.username = "Mr/Ms Guest"
         if self.total > 0.00:
@@ -116,4 +127,5 @@ class Bank():
         self.products = []
         if abort == 1:
             print "200: Transaction aborted"
+            logging.info("200: Transaction aborted")
         

@@ -9,6 +9,9 @@ from wifi import Wifi
 from time import sleep
 from subprocess import call
 
+import logging
+logging.basicConfig(filename='bitbank.log',level=logging.DEBUG)
+
 config = ""
 
 def open_la():
@@ -86,8 +89,8 @@ Examples:
 def run():
     show_logo() 
     _Runner = True
-
-    global config = ConfigParser.ConfigParser()
+    global config
+    config = ConfigParser.ConfigParser()
     config.read('bitbank.cfg')
 
     db = MySQLdb.connect(host=config.get('Database', 'hostname'),
@@ -108,7 +111,7 @@ def run():
             barcode=raw_input('Please scan [usercard,product barcode]: ')
 
         line = barcode.split(" ")
-        if bank.login(line[-1]) == True:
+        if len(line) > 1 and bank.login(line[-1]) == True:
             bank = process_line(bank,barcode)
             continue
         bank.login(barcode)
