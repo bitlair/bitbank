@@ -7,13 +7,13 @@ from bank import Bank
 from ansi import clear, cursor, Color
 from wifi import Wifi
 from time import sleep
+from subprocess import call
 
 config = ""
 
 def open_la():
     global config
     if config.get('Kassa','kassala') == "True":
-        from subprocess import call
         call("./open")
 
 def show_logo():
