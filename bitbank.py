@@ -67,6 +67,11 @@ Examples:
     5 jdoe                      John withdraws EUR 5.00.
     deposit 5 jdoe              John deposits EUR 5.00 into his account.
 
+    <username> or <userbarcode> Login
+    4029764001807               Add 1 Mate to your tab
+    bank                        Pay your tab with your bank account
+    pay/kas                     Pay your tab to the register
+
     If you're unsure of the syntax, just type the command, press enter, and
     read the instructions.
     """
@@ -104,7 +109,7 @@ def run():
         if barcode == "clear" or barcode == "abort" or barcode == "reset":
             bank.reset()
 
-        elif barcode == "pay":
+        elif barcode == "pay" or barcode == "kas":
             print "\x1b[H\x1b[J"
             show_logo()
             bank.pay()
