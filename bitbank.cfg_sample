@@ -10,3 +10,7 @@ hostname=localhost
 database=bitwifi
 username=bitwifi
 password=
+
+[Kassa]
+kassala=False
+

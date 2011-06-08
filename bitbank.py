@@ -8,9 +8,13 @@ from ansi import clear, cursor, Color
 from wifi import Wifi
 from time import sleep
 
+config = ""
+
 def open_la():
-    from subprocess import call
-    call("./open")
+    global config
+    if config.get('Kassa','kassala') == "True":
+        from subprocess import call
+        call("./open")
 
 def show_logo():
     # set palette color 1 to our color
@@ -40,17 +44,20 @@ def process_line(bank,line):
         indexje = user_input.index("deposit")+1
         bank.deposit(user_input[indexje])
         bank.logout()
+        open_la()
         return bank
 
     if "withdraw" in user_input:
         indexje = user_input.index("withdraw")+1
         bank.withdraw(user_input[indexje])
         bank.logout()
+        open_la()
         return bank
 
     if Decimal(user_input[0]) < 1000:
         bank.withdraw(user_input[0])
         bank.logout()
+        open_la()
         return bank
 
     for x in user_input:
@@ -80,7 +87,7 @@ def run():
     show_logo() 
     _Runner = True
 
-    config = ConfigParser.ConfigParser()
+    global config = ConfigParser.ConfigParser()
     config.read('bitbank.cfg')
 
     db = MySQLdb.connect(host=config.get('Database', 'hostname'),
