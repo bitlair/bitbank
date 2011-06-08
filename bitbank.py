@@ -136,11 +136,13 @@ def run():
             temp = barcode.split(' ')
             amount = temp[1]
             bank.deposit(amount)
+            open_la()
 
         elif barcode.startswith('withdraw'):
             temp = barcode.split(' ')
             amount = temp[1]
             bank.withdraw(amount)
+            open_la()
 
         elif barcode.startswith('adduser'):
             temp = barcode.split(' ')
