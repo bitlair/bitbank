@@ -1,6 +1,8 @@
 import MySQLdb
 import ConfigParser
 import sys
+
+from decimal import *
 from bank import Bank
 from ansi import clear, cursor, Color
 from wifi import Wifi
@@ -32,6 +34,43 @@ def show_logo():
                 sys.stdout.write(" ")
         sys.stdout.write("\n")
 
+def process_line(bank,line):
+    user_input = line.split(" ")
+    if "deposit" in user_input:
+        indexje = user_input.index("deposit")+1
+        bank.deposit(user_input[indexje])
+        bank.logout()
+        return bank
+
+    if "withdraw" in user_input:
+        indexje = user_input.index("withdraw")+1
+        bank.withdraw(user_input[indexje])
+        bank.logout()
+        return bank
+
+    if Decimal(user_input[0]) < 1000:
+        bank.withdraw(user_input[0])
+        bank.logout()
+        return bank
+
+    for x in user_input:
+        if bank.product_add(x) == True:
+            continue
+    bank.account()
+    bank.logout()
+    return bank
+
+def help():
+    return """
+Examples:
+    4029764001807 jdoe          John pays for one Club Mate.
+    5 jdoe                      John withdraws EUR 5.00.
+    deposit 5 jdoe              John deposits EUR 5.00 into his account.
+
+    If you're unsure of the syntax, just type the command, press enter, and
+    read the instructions.
+    """
+
 def run():
     show_logo() 
     _Runner = True
@@ -56,10 +95,13 @@ def run():
         else:
             barcode=raw_input('Please scan [usercard,product barcode]: ')
 
-        if barcode.startswith('1337'):
-            bank.login(barcode)
+        line = barcode.split(" ")
+        if bank.login(line[-1]) == True:
+            bank = process_line(bank,barcode)
+            continue
+        bank.login(barcode)
 
-        elif barcode == "clear" or barcode == "abort" or barcode == "reset":
+        if barcode == "clear" or barcode == "abort" or barcode == "reset":
             bank.reset()
 
         elif barcode == "pay":
@@ -102,14 +144,16 @@ def run():
                 continue
             wifi.registration(bank.username,temp[1],temp[2])
 
+        elif barcode == "help":
+            print help()
+
         elif barcode == "exit":
             _Runner = False
         elif barcode == "":
             continue
         else:
             if bank.product_add(barcode) != True:
-                if bank.login(barcode) != True:
-                    print "404: Not found"
+                print "404: Not found"
 
 if __name__ ==  '__main__':
     print "\x1b[H\x1b[J"
