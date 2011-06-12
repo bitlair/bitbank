@@ -42,7 +42,7 @@ def show_logo():
         sys.stdout.write("\n")
 
 def process_line(bank,line):
-    user_input = line.split(" ")
+    user_input = filter (lambda a: a != "", line.split(" "))
     if "deposit" in user_input:
         indexje = user_input.index("deposit")+1
         bank.deposit(user_input[indexje])
@@ -81,9 +81,6 @@ Examples:
     4029764001807               Add 1 Mate to your tab
     bank                        Pay your tab with your bank account
     pay/kas                     Pay your tab to the register
-
-    If you're unsure of the syntax, just type the command, press enter, and
-    read the instructions.
     """
 
 def run():
@@ -110,11 +107,10 @@ def run():
         else:
             barcode=raw_input('Please scan [usercard,product barcode]: ')
 
-        line = barcode.split(" ")
+        line = filter (lambda a: a != "", barcode.split(" "))
         if len(line) > 1 and bank.login(line[-1]) == True:
             bank = process_line(bank,barcode)
             continue
-        bank.login(barcode)
 
         if barcode == "clear" or barcode == "abort" or barcode == "reset":
             bank.reset()
@@ -169,8 +165,9 @@ def run():
         elif barcode == "":
             continue
         else:
-            if bank.product_add(barcode) != True:
-                print "404: Not found"
+            if bank.login(barcode) != True:
+                if bank.product_add(barcode) != True:
+                    print "404: Not found"
 
 if __name__ ==  '__main__':
     print "\x1b[H\x1b[J"
