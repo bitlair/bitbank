@@ -112,21 +112,21 @@ def run():
             bank = process_line(bank,barcode)
             continue
 
-        if barcode == "clear" or barcode == "abort" or barcode == "reset":
+        if barcode == "clear" or barcode == "abort" or barcode == "reset" or barcode.startswith('ABORT'):
             bank.reset()
 
-        elif barcode == "pay" or barcode == "kas":
+        elif barcode == "pay" or barcode == "kas" or barcode.startswith('KAS'):
             print "\x1b[H\x1b[J"
             show_logo()
             bank.pay()
             open_la()
 
-        elif barcode == "logout":
+        elif barcode == "logout" or barcode.startswith('LOGOUT'):
             print "\x1b[H\x1b[J"
             show_logo() 
             bank.logout()
 
-        elif barcode == "bank":
+        elif barcode == "bank" or barcode.startswith('BANK'):
             print "\x1b[H\x1b[J"
             show_logo()
             bank.account()
