@@ -105,6 +105,19 @@ class Bank():
             return True
         else:
             return False
+    def list(self):
+        cursor = self.db.cursor()
+        cursor.execute("""SELECT name,member_price,price FROM products""")
+        result_set = cursor.fetchall ()
+        print "Product\t\t\tMember price\tGuest price"
+        for row in result_set:
+            if len(row[0]) > 16:
+                print "%s\t\t%s\t\t%s" % (row[0], row[1],row[2])
+            elif len(row[0]) < 8:
+                print "%s\t\t\t\t%s\t\t%s" % (row[0], row[1],row[2])
+            else:
+                print "%s\t\t\t%s\t\t%s" % (row[0], row[1],row[2])
+        
 
     def logout(self):
         try:

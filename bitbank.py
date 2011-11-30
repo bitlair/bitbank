@@ -81,6 +81,7 @@ Examples:
     4029764001807               Add 1 Mate to your tab
     bank                        Pay your tab with your bank account
     pay/kas                     Pay your tab to the register
+    list                        Price list
     """
 
 def run():
@@ -146,6 +147,8 @@ def run():
         elif barcode.startswith('adduser'):
             temp = barcode.split(' ')
             bank.account_add(temp[1])
+        elif barcode.startswith('list'):
+            bank.list() 
 
         elif barcode.startswith('mac') and config.get('Bitwifi','enable') == "True":
             wifi.unregister_list()
