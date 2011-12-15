@@ -60,7 +60,8 @@ def process_line(bank,line):
     if Decimal(user_input[0]) < 1000:
         bank.withdraw(user_input[0])
         bank.logout()
-        open_la()
+        if user_input[0] < 0:
+            open_la()
         return bank
 
     for x in user_input:
