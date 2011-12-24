@@ -1,6 +1,7 @@
 from decimal import *
 from random import randrange
 import logging
+import sys 
 
 class Bank():
     def __init__(self,db):
@@ -120,6 +121,7 @@ class Bank():
         
 
     def logout(self):
+        self.show_warning()
         try:
             del self.balance
         except:
@@ -141,4 +143,34 @@ class Bank():
         if abort == 1:
             print "200: Transaction aborted"
             logging.info("200: Transaction aborted")
-        
+
+    def show_warning(self):
+        if self.balance < -13.37:
+            return
+        # set palette color 1 to our color
+        print "\x1b]P1FD5A1E"
+
+        logo = """
+ W   W   AA   RRR    NN   I   NN    GGG
+ W   W  A  A  R  R  N  N  I  N  N  G
+ W W W  AAAA  RRR   N  N  I  N  N  G  GG
+  W W   A  A  R  R  N  N  I  N  N   GGG
+
+ BBB               K  k
+ B  B   AA    NN   K K     L    I    MM MM   I  TTT
+ BBB   A  A  N  N  KK      L    I   M  M  M  I   T
+ B  B  AAAA  N  N  K K     L    I   M  M  M  I   T
+ BBB   A  A  N  N  K  K    LLL  I   M  M  M  I   T
+"""
+        lines = logo.splitlines()
+
+        for y, line in enumerate(lines):
+            for x, char in enumerate(line):
+                if char != ' ':
+                    sys.stdout.write("\x1b[05;41m")
+                    sys.stdout.write(char)
+                    sys.stdout.write("\x1b[00;40m")
+                else:
+                    sys.stdout.write(" ")
+            sys.stdout.write("\n")
+            
