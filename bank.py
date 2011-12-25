@@ -145,7 +145,7 @@ class Bank():
             logging.info("200: Transaction aborted")
 
     def show_warning(self):
-        if self.balance < -13.37:
+        if self.balance >= Decimal("-13.37"):
             return
         # set palette color 1 to our color
         print "\x1b]P1FD5A1E"
