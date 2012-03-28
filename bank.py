@@ -10,6 +10,7 @@ class Bank():
         self.username = "Mr/Ms Guest"
         self.total = Decimal('0.00')
         self.products = []
+        self.plastic = []
     
     def account_add(self,username):
         usernumber = int("%s%s" % (1337,randrange(000000000,999999999)))
@@ -33,6 +34,9 @@ class Bank():
             self.balance = self.balance - Decimal(self.total)
         cursor = self.db.cursor()
         cursor.execute("""UPDATE member SET balance = %s WHERE nick = %s LIMIT 1""", (self.balance,self.username))
+        for plastic in self.plastic:
+            cursor.execute("""INSERT INTO plastic (user,amount,price) VALUES(%s,%s,%s)""",(self.username,plastic[1],plastic[2]))
+        self.plastic = []
         print "200: %s billed to your account new balance %s" % (self.total,self.balance)
         logging.info("200: %s billed to your account new balance %s" % (self.total,self.balance))
         self.total = Decimal('0.00')
@@ -60,6 +64,21 @@ class Bank():
         print "200: Your balance is %s" % self.balance
         logging.info("200: Your balance is %s" % self.balance)
 
+    def plastic_add(self,amount):
+        if self.member == 1:
+            price_pm = "0.80"
+        else:
+            price_pm = "1"
+        self.total = self.total + Decimal(price_pm) * Decimal(amount) 
+        self.products.append(["Plastic %s Meter"%amount,Decimal(price_pm) * Decimal(amount),'PLASTIC %s'%amount])
+        self.plastic.append([self.username,amount,price_pm])
+        for product in self.products:
+            print "\t%s \t#%s\t DROP: %s Euro" % (self.username,product[0],product[1])
+            logging.info("\t%s \t#%s\t DROP: %s Euro" % (self.username,product[0],product[1]))
+        print "\t\t\t\tSubtotal: %s" % self.total
+        logging.info("\t\t\t\tSubtotal: %s" % self.total)
+        return True
+
     def product_add(self,barcode):
         cursor = self.db.cursor()
         if self.member == 1:
@@ -81,6 +100,11 @@ class Bank():
         return True
 
     def pay(self):
+        cursor = self.db.cursor()
+        for plastic in self.plastic:
+            cursor.execute("""INSERT INTO plastic (user,amount,price) VALUES(%s,%s,%s)""",(self.username,plastic[1],plastic[2]))
+        self.plastic = []
+
         print "200: %s payed %s euro to the register" % (self.username,self.total)
         logging.info("200: %s payed %s euro to the register" % (self.username,self.total))
         try:

@@ -57,6 +57,11 @@ def process_line(bank,line):
         open_la()
         return bank
 
+    if "plastic" in user_input:
+        indexje = user_input.index("plastic")+1
+        bank.plastic_add(user_input[indexje])
+        return bank
+
     if Decimal(user_input[0]) < 1000:
         bank.withdraw(user_input[0])
         bank.logout()
@@ -144,6 +149,11 @@ def run():
             amount = temp[1]
             bank.withdraw(amount)
             open_la()
+
+        elif barcode.startswith('plastic'):
+            temp = barcode.split(' ')
+            amount = temp[1]
+            bank.plastic_add(amount)
 
         elif barcode.startswith('adduser'):
             temp = barcode.split(' ')
