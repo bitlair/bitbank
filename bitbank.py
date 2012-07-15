@@ -97,10 +97,17 @@ def run():
     config = ConfigParser.ConfigParser()
     config.read('bitbank.cfg')
 
-    db = MySQLdb.connect(host=config.get('Database', 'hostname'),
-        user=config.get('Database', 'username'),
-        passwd=config.get('Database', 'password'),
-        db=config.get('Database', 'database'))
+    connected = False
+    while not connected:
+        try:
+            db = MySQLdb.connect(host=config.get('Database', 'hostname'),
+                user=config.get('Database', 'username'),
+                passwd=config.get('Database', 'password'),
+                db=config.get('Database', 'database'))
+            connected =  True
+        except Exception:
+            print "Database connection failed, retrying.."
+            sleep(5)
  
     bank = Bank(db)
 
