@@ -11,6 +11,7 @@ from subprocess import call
 
 try:
     import RPi.GPIO as GPIO
+    GPIO.setmode(GPIO.BOARD)
     GPIO.setup(24, GPIO.OUT)
 except:
     print("No RPi.GRIO")
