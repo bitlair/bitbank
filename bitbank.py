@@ -12,7 +12,7 @@ from subprocess import call
 try:
     import RPi.GPIO as GPIO
     GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(24, GPIO.OUT)
+    GPIO.setup(23, GPIO.OUT)
 except:
     print("No RPi.GRIO")
 
@@ -24,9 +24,9 @@ config = ""
 def open_la():
     global config
     if config.get('Kassa','kassala') == "True":
-        GPIO.output(24, True)
+        GPIO.output(23, True)
         sleep(1)
-        GPIO.output(24, False)
+        GPIO.output(23, False)
 
 def show_logo():
     # set palette color 1 to our color
