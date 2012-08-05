@@ -9,6 +9,12 @@ from wifi import Wifi
 from time import sleep
 from subprocess import call
 
+try:
+    import RPi.GPIO as GPIO
+    GPIO.setup(24, GPIO.OUT)
+except:
+    print("No RPi.GRIO")
+
 import logging
 logging.basicConfig(filename='bitbank.log',level=logging.DEBUG)
 
@@ -17,7 +23,9 @@ config = ""
 def open_la():
     global config
     if config.get('Kassa','kassala') == "True":
-        call("./open")
+        GPIO.output(24, True)
+        sleep(1)
+        GPIO.output(24, False)
 
 def show_logo():
     # set palette color 1 to our color
