@@ -28,6 +28,17 @@ def open_la():
         sleep(1)
         GPIO.output(23, False)
 
+def free_hug():
+        hug = """
+       ___                  ____                  ___
+  ____(   \              .-'    `-.              /   )____
+ (____     \_____       /  (O  O)  \       _____/     ____)
+(____            `-----(      )     )-----'            ____)
+ (____     _____________\  .____.  /_____________     ____)
+   (______/              `-.____.-'              \______)
+"""
+        return hug
+
 def show_logo():
     # set palette color 1 to our color
     print "\x1b]P1FD5A1E"
@@ -189,6 +200,9 @@ def run():
 
         elif barcode == "help":
             print help()
+
+        elif barcode == "hug":
+            print free_hug()
 
         elif barcode == "exit":
             _Runner = False
