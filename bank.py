@@ -1,7 +1,38 @@
 from decimal import *
 from random import randrange
 import logging
-import sys 
+import sys
+import socket
+import os
+from time import sleep 
+from threading import Thread
+
+class CallBar(Thread):
+    def run(self):
+        udpsock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+        udpsock.sendto("""INVITE sip:101@192.168.88.4 SIP/2.0
+Via: SIP/2.0/UDP 192.168.88.4;branch=z9hG4bKkjshdyff
+Max-Forwards: 70
+To: Bitlair <sip:101@192.168.88.4>
+From: Troll <sip:troll@troll.com>;tag=1928301774
+Call-ID: a84b4c76e66710
+CSeq: 314159 INVITE
+Contact: <sip:troll@troll.com>
+Content-Type: application/sdp
+Content-Length: 0
+""", ("192.168.88.4", 5060))
+
+        sleep(3)
+        udpsock.sendto("""BYE sip:101@192.168.88.4 SIP/2.0
+Via: SIP/2.0/UDP 192.168.88.4;branch=z9hG4bKnashds10
+Max-Forwards: 70
+From: Troll <sip:troll@troll.com>;tag=1928301774
+To: Bitlair <sip:101@192.168.88.4>
+Call-ID: a84b4c76e66710
+CSeq: 314160 BYE
+Content-Length: 0
+""", ("192.168.88.4", 5060))
 
 class Bank():
     def __init__(self,db):
@@ -171,6 +202,7 @@ class Bank():
     def show_warning(self):
         if self.balance >= Decimal("-13.37"):
             return
+        CallBar().start()
         # set palette color 1 to our color
         print "\x1b]P1FD5A1E"
 
