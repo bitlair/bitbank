@@ -74,6 +74,15 @@ class Bank():
         if self.member == 1:
             self.logout()
         self.products = []
+    
+    def shame(self):
+        cursor = self.db.cursor()
+        cursor.execute("""SELECT nick FROM member WHERE balance < "-13.37" ORDER BY  `member`.`balance` ASC ;""")
+        result_set = cursor.fetchall ()
+        i = 1 
+        for row in result_set:
+            print "%s %s" % (i, row[0])
+            i = i + 1
 
     def deposit(self,amount):
         cursor = self.db.cursor()

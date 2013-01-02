@@ -165,6 +165,9 @@ def run():
             show_logo()
             bank.account()
 
+        elif barcode == "shame":
+            bank.shame()
+
         elif barcode.startswith('deposit'):
             temp = barcode.split(' ')
             amount = temp[1]
