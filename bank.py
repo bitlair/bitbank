@@ -21,7 +21,7 @@ CSeq: 314159 INVITE
 Contact: <sip:troll@troll.com>
 Content-Type: application/sdp
 Content-Length: 0
-""", ("192.168.88.4", 5060))
+""", ("192.168.88.4", 5061))
 
         sleep(3)
         udpsock.sendto("""BYE sip:101@192.168.88.4 SIP/2.0
@@ -32,7 +32,7 @@ To: Bitlair <sip:101@192.168.88.4>
 Call-ID: a84b4c76e66710
 CSeq: 314160 BYE
 Content-Length: 0
-""", ("192.168.88.4", 5060))
+""", ("192.168.88.4", 5061))
 
 class Bank():
     def __init__(self,db):
